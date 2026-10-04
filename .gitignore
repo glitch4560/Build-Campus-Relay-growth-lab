@@ -1,0 +1,19 @@
+# Dependencies and temporary browser/test output
+node_modules/
+dist/
+.vercel/
+.local-archive/
+tmp/
+playwright-report/
+test-results/
+*.log
+
+# Local credentials and environment settings
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

@@ -1,0 +1,15 @@
+{
+  "name": "campus-relay-growth-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A campus growth challenge prototype with campaign planning and a student workshop preview.",
+  "scripts": {
+    "build": "node tools/build.cjs",
+    "start": "node tools/preview-server.cjs",
+    "test": "node --check app.js && node tests/registration.test.cjs",
+    "test:browser": "node tests/browser.test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.57.0"
+  }
+}

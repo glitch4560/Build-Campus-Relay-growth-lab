@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {seed,addRegistration,forecast,resolveSource,csvCell}=require('../app.js');
+const s=seed();assert.equal(s.leads.length,160);assert.equal(new Set(s.leads.map(l=>l.email)).size,160);
+const input={name:'Test Student',email:' TEST@EXAMPLE.COM ',college:'Demo College',code:'c01',eligible:true,consent:true};
+const a=addRegistration(s,input);assert.equal(a.lead.source,'C01');assert.equal(a.lead.channel,'campus');assert.equal(s.leads.length,161);
+const b=addRegistration(s,{...input,code:'CLUB01'});assert.equal(b.duplicate,true);assert.equal(b.lead.source,'C01');assert.equal(s.leads.length,161);
+const r=addRegistration(s,{...input,email:'peer@example.com',code:a.lead.code});assert.equal(r.lead.channel,'peer');assert.equal(r.lead.source,a.lead.code);
+assert.throws(()=>addRegistration(s,{...input,email:'new@example.com',code:'UNKNOWN'}));assert.throws(()=>addRegistration(s,{...input,email:'new@example.com',eligible:false}));assert.throws(()=>addRegistration(s,{...input,email:'bad'}));assert.throws(()=>addRegistration(s,{...input,email:'new@example.com',consent:false}));
+assert.deepEqual(resolveSource('',s),{channel:'direct',source:'DIRECT'});assert.equal(resolveSource('club01',s).channel,'club');
+const f={campus:{reach:3000,click:30,register:40},club:{reach:800,click:25,register:40},peer:{reach:200,click:60,register:50},overlap:0};assert.equal(forecast(f).net,500);assert.equal(forecast({...f,overlap:10}).net,450);assert.equal(forecast({...f,campus:{reach:3000,click:25,register:30}}).net,365);assert.equal(forecast({...f,campus:{reach:3000,click:25,register:30}}).extraGroups,12);assert.equal(forecast({...f,campus:{reach:3000,click:0,register:30}}).extraGroups,null);
+assert.equal(csvCell('=SUM(A1)'), '"\'=SUM(A1)"');assert.equal(csvCell('a"b'),'"a""b"');console.log('PASS: deduplication, first-touch attribution, peer referrals, eligibility, validation, forecasts, and CSV safety.');

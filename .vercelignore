@@ -1,0 +1,14 @@
+.git/
+.vercel/
+.local-archive/
+node_modules/
+dist/
+tmp/
+tests/
+submission/
+tools/push-to-github.cmd
+tools/preview-server.cjs
+README.md
+.env
+.env.*
+*.log
